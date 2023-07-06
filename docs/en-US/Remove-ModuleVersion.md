@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Clean-ModuleVersion
+# Remove-ModuleVersion
 
 ## SYNOPSIS
 Remove old installed module versions.
@@ -13,7 +13,7 @@ Remove old installed module versions.
 ## SYNTAX
 
 ```
-Clean-ModuleVersion [[-Name] <String>] [-Scope <String>] [-VersionCount <Int32>] [-WhatIf] [-Confirm]
+Remove-ModuleVersion [[-Name] <String>] [-Scope <String>] [-VersionCount <Int32>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
