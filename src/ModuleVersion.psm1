@@ -1,8 +1,6 @@
 ﻿# Implement your module commands in this script.
 
-Write-Verbose -Message 'Initializing module ModuleVersion'
-
-$Public  = @( Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue )
+$Public = @( Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue )
 $Private = @( Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue )
 
 #Dot source the files
@@ -18,3 +16,16 @@ foreach ($import in @($Public + $Private)) {
 foreach ($function in $Public) {
     Export-ModuleMember -Function $function.BaseName
 }
+
+#region Module shared content
+Add-Type -TypeDefinition @'
+    namespace PW.ModuleVersion {
+        [System.Flags]
+        public enum Scope {
+            None,
+            CurrentUser,
+            AllUsers
+        }
+    }
+'@
+#endregion
