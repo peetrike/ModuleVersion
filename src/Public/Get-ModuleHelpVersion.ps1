@@ -1,37 +1,46 @@
 ﻿function Get-ModuleHelpVersion {
-    [CmdletBinding()]
+    [CmdletBinding(
+        DefaultParameterSetName = 'Name'
+    )]
     param (
+            [Parameter(
+                ParameterSetName = 'Name',
+                Position = 0
+            )]
+            [SupportsWildcards()]
             [string[]]
-        $Module
+        $Name,
+            [Parameter(
+                Mandatory,
+                ParameterSetName = 'ModuleInfo',
+                ValueFromPipeline
+            )]
+            [Management.Automation.PSModuleInfo[]]
+        $InputObject
     )
 
-    $HelpInfoNamespace = @{ helpInfo = 'http://schemas.microsoft.com/powershell/help/2010/05' }
+    begin {
+        $HelpInfoNamespace = @{ helpInfo = 'http://schemas.microsoft.com/powershell/help/2010/05' }
 
-    $ModuleParams = @{
-        ListAvailable = $true
+        if ($PSCmdlet.ParameterSetName -like 'Name') {
+            $InputObject = Get-Module @PSBoundParameters -ListAvailable
+        }
     }
-    if ($Module) {
-        $ModuleParams.Name = $Module
-    }
 
-    $Modules = Get-Module @ModuleParams | Where-Object HelpInfoUri
+    process {
+        foreach ($mModule in $InputObject) {
+            $HelpPath = Join-Path -Path $mModule.ModuleBase -ChildPath ('{0}*helpinfo.xml' -f $mModule.Name)
 
-    foreach ($mModule in $Modules) {
-        $mDir = $mModule.ModuleBase
-
-        if (Test-Path $mdir\*helpinfo.xml) {
-            $mNodes = Get-ChildItem -Path $mdir\*helpinfo.xml -ErrorAction SilentlyContinue |
-                Select-Xml -Namespace $HelpInfoNamespace -XPath '//helpInfo:UICulture'
-            foreach ($mNode in $mNodes) {
-                $mCulture = $mNode.Node.UICultureName
-                $mVer = $mNode.Node.UICultureVersion
-
-                [PSCustomObject]@{
-                    ModuleName = $mModule.Name
-                    Culture    = $mCulture
-                    Version    = $mVer
+            Get-ChildItem -Path $HelpPath |
+                Select-Xml -Namespace $HelpInfoNamespace -XPath '//helpInfo:UICulture' |
+                ForEach-Object {
+                    [PSCustomObject] @{
+                        ModuleName    = $mModule.Name
+                        ModuleVersion = $mModule.Version
+                        Culture       = $_.Node.UICultureName
+                        Version       = $_.Node.UICultureVersion
+                    }
                 }
-            }
         }
     }
 }
