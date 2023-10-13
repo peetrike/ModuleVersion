@@ -5,8 +5,8 @@
     GUID                 = '60dc6925-fc4b-4070-9c9e-e150e4ce6821'
 
     Author               = 'Peter Wawa'
-    CompanyName          = 'MyCompany'
-    Copyright            = 'Copyright (c) 2023 MyCompany'
+    CompanyName          = '!Zum!'
+    Copyright            = 'Copyright (c) 2023 !Zum!'
 
     Description          = 'Deal with installed module versions'
 
@@ -38,6 +38,7 @@
     # Functions to export from this module
     FunctionsToExport    = @(
         'Find-ModuleVersion'
+        'Get-ModuleHelpVersion'
         'Remove-ModuleVersion'
         'Update-LocalModule'
     )
@@ -59,6 +60,7 @@
             Tags         = @(
                 'PSEdition_Core'
                 'PSEdition_Deskop'
+                'Windows'
             )
 
             LicenseUri   = 'https://github.com/peetrike/ModuleVersion/blob/main/LICENSE'
