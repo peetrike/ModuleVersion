@@ -11,12 +11,15 @@ Locale: en-US
 {{ Fill in the Description }}
 
 ## ModuleVersion Cmdlets
-### [Clean-ModuleVersion](Clean-ModuleVersion.md)
-{{ Fill in the Description }}
-
 ### [Find-ModuleVersion](Find-ModuleVersion.md)
-{{ Fill in the Description }}
+Find local modules that have too many versions on disk
+
+### [Get-ModuleHelpVersion](Get-ModuleHelpVersion.md)
+Returns module help version and culture info
+
+### [Remove-ModuleVersion](Remove-ModuleVersion.md)
+Remove old installed module versions.
 
 ### [Update-LocalModule](Update-LocalModule.md)
-{{ Fill in the Description }}
+Updates local modules from Powershell repository
 
