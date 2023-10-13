@@ -16,16 +16,3 @@ foreach ($import in @($Public + $Private)) {
 foreach ($function in $Public) {
     Export-ModuleMember -Function $function.BaseName
 }
-
-#region Module shared content
-Add-Type -TypeDefinition @'
-    namespace PW.ModuleVersion {
-        [System.Flags]
-        public enum Scope {
-            None,
-            CurrentUser,
-            AllUsers
-        }
-    }
-'@
-#endregion
