@@ -4,11 +4,7 @@
 function Update-LocalModule {
     # .EXTERNALHELP ModuleVersion-help.xml
     [CmdletBinding(SupportsShouldProcess)]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        'PSReviewUnusedParameter',
-        'Repository'
-    )]
-    Param (
+    param (
             [parameter(
                 ValueFromPipeline,
                 ValueFromPipelineByPropertyName
@@ -19,53 +15,49 @@ function Update-LocalModule {
         $Name = '*',
             [ValidateNotNullOrEmpty()]
             [string[]]
-        $Repository
+        $Repository = '*'
     )
 
-    Begin {
+    begin {
         if (-not (Test-IsAdmin)) {
             throw 'Admin permission required'
         }
         Import-Module PowerShellGet -Verbose:$false
         $CallerErrorActionPreference = $ErrorActionPreference
+
+        $ModuleProps = @{
+            ErrorAction = [Management.Automation.ActionPreference]::SilentlyContinue
+        }
     }
 
-    Process {
+    process {
         Get-Module -Name $Name -ListAvailable -Verbose:$false |
             Group-Object -Property Name |
             ForEach-Object {
                 $module = $_
-                $InstalledProps = @{
-                    Name        = $module.Name
-                    ErrorAction = [Management.Automation.ActionPreference]::SilentlyContinue
-                }
-                if ($Repository) {
-                    $InstalledProps.Repository = $Repository
-                }
-                if ($InstalledModule = Get-InstalledModule @InstalledProps) {
+
+                $InstalledModule = Get-InstalledModule -Name $module.Name @ModuleProps |
+                    Where-Object Repository -like $Repository
+                if ($InstalledModule) {
                     if ($PSCmdlet.ShouldProcess($module.Name, 'Update module')) {
                         $UpdateProps = @{
-                            Name    = $module.Name
+                            Force   = $true
                             WhatIf  = $false
                             Confirm = $false
                         }
                         if ($InstalledModule.AdditionalMetadata.IsPrerelease) {
                             $UpdateProps.AllowPreRelease = $true
                         }
-                        $InstalledModule | Update-Module @UpdateProps
+                        Update-Module -Name $InstalledModule.Name
                     }
                 } else {
-                    $FindProps = @{
-                        Name = $module.Name
-                    }
-                    if ($Repository) {
-                        $FindProps.Repository = $Repository
-                    }
-                    $ProposedModule = Find-Module @FindProps -ErrorAction SilentlyContinue |
+                    $ProposedModule = Find-Module -Name $module.Name @ModuleProps |
                         Sort-Object -Property Version -Descending |
                         Select-Object -First 1
                     if ($ProposedModule) {
-                        $Newest = $module.Group | Sort-Object -Property Version -Descending | Select-Object -First 1
+                        $Newest = $module.Group |
+                            Sort-Object -Property Version -Descending |
+                            Select-Object -First 1
                         if (-not ($Edition = $PSEdition)) { $Edition = 'Desktop' }
                             # find-module returns version as string
                         if ([version]$ProposedModule.Version -gt $Newest.Version -and
