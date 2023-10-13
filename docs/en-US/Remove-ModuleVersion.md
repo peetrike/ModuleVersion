@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Clean-ModuleVersion
+# Remove-ModuleVersion
 
 ## SYNOPSIS
 Remove old installed module versions.
@@ -13,7 +13,7 @@ Remove old installed module versions.
 ## SYNTAX
 
 ```
-Clean-ModuleVersion [[-Name] <String>] [-Scope <String>] [-VersionCount <Int32>] [-WhatIf] [-Confirm]
+Remove-ModuleVersion [[-Name] <String>] [-Scope <Scope>] [-VersionCount <Int32>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -31,6 +31,21 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Name
 Specifies module name to search
 
@@ -40,7 +55,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: 1
 Default value: *
 Accept pipeline input: False
 Accept wildcard characters: True
@@ -50,9 +65,10 @@ Accept wildcard characters: True
 {{ Fill Scope Description }}
 
 ```yaml
-Type: String
+Type: Scope
 Parameter Sets: (All)
 Aliases:
+Accepted values: None, CurrentUser, AllUsers
 
 Required: False
 Position: Named
@@ -84,21 +100,6 @@ The cmdlet is not run.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
 
 Required: False
 Position: Named

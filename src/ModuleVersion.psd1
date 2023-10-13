@@ -1,17 +1,17 @@
 ﻿@{
-    RootModule        = 'ModuleVersion.psm1'
-    ModuleVersion     = '0.0.1'
+    RootModule           = 'ModuleVersion.psm1'
+    ModuleVersion        = '0.0.1'
 
-    GUID              = '60dc6925-fc4b-4070-9c9e-e150e4ce6821'
+    GUID                 = '60dc6925-fc4b-4070-9c9e-e150e4ce6821'
 
-    Author            = 'CPG4285'
-    CompanyName       = 'MyCompany'
-    Copyright         = 'Copyright (c) 2023 MyCompany'
+    Author               = 'Peter Wawa'
+    CompanyName          = '!Zum!'
+    Copyright            = 'Copyright (c) 2023 !Zum!'
 
-    Description       = 'Deal with installed module versions'
+    Description          = 'Deal with installed module versions'
 
     # Minimum version of the Windows PowerShell engine required by this module
-    PowerShellVersion = '5.1'
+    PowerShellVersion    = '5.1'
 
     CompatiblePSEditions = @(
         'Core'
@@ -36,15 +36,18 @@
     # FormatsToProcess = @('ModuleVersion.Format.ps1xml')
 
     # Functions to export from this module
-    FunctionsToExport = @(
-        'Clean-ModuleVersion'
+    FunctionsToExport    = @(
         'Find-ModuleVersion'
+        'Get-ModuleHelpVersion'
+        'Remove-ModuleVersion'
         'Update-LocalModule'
     )
 
-    CmdletsToExport   = @()
-    VariablesToExport = @()
-    AliasesToExport   = @()
+    CmdletsToExport      = @()
+    VariablesToExport    = @()
+    AliasesToExport      = @(
+        'Clean-ModuleVersion'
+    )
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()
@@ -52,13 +55,17 @@
     # List of all files packaged with this module
     # FileList          = @()
 
-    PrivateData       = @{
+    PrivateData          = @{
         PSData = @{
-            Tags         = @()
+            Tags         = @(
+                'PSEdition_Core'
+                'PSEdition_Deskop'
+                'Windows'
+            )
 
-            LicenseUri   = ''
-            ProjectUri   = ''
-            ReleaseNotes = ''
+            LicenseUri   = 'https://github.com/peetrike/ModuleVersion/blob/main/LICENSE'
+            ProjectUri   = 'https://github.com/peetrike/ModuleVersion'
+            ReleaseNotes = 'https://github.com/peetrike/ModuleVersion/blob/main/CHANGELOG.md'
 
             # A URL to an icon representing this module.
             # IconUri = ''

@@ -1,10 +1,5 @@
 function Find-ModuleVersion {
-    <#
-        .SYNOPSIS
-            Find local modules that have too many versions on disk
-        .DESCRIPTION
-            This script searches installed modules that have too many versions on disk.
-    #>
+    # .EXTERNALHELP ModuleVersion-help.xml
     [CmdletBinding()]
     param (
             [Parameter(
@@ -14,29 +9,18 @@ function Find-ModuleVersion {
             [SupportsWildcards()]
             # Specifies module name to search
         $Name = '*',
-            [ValidateSet('AllUsers', 'CurrentUser')]
-            [string]
-        $Scope = 'AllUsers',
+            [PW.ModuleVersion.Scope]
+        $Scope = 3,
             [ValidateRange(1, 10)]
             [int]
         $VersionCount = 2
     )
 
-    $PSVersionName = 'PowerShell'
-    if ($PSVersionTable.PSVersion.Major -lt 6) {
-        $PSVersionName = 'Windows' + $PSVersionName
-    }
-    $SearchPattern = switch ($Scope) {
-        'AllUsers' { '{0}\' -f $env:ProgramFiles }
-        'CurrentUser' { '{0}*' -f $env:USERPROFILE }
-    }
-    $ModulePath = $env:PSModulePath -split [IO.Path]::PathSeparator | Where-Object {
-        $_ -like ('{0}{1}\Modules' -f $SearchPattern, $PSVersionName)
-    }
+    foreach ($ModulePath in Get-ModulePath -Scope $Scope) {
+        $SearchPath = Join-Path -Path $ModulePath -ChildPath $Name
 
-    $SearchPath = Join-Path -Path $ModulePath -ChildPath $Name
-
-    Get-ChildItem -Path $SearchPath -Include * -Directory |
-        Group-Object { $_.Parent.Name } -NoElement |
-        Where-Object Count -GT $VersionCount
+        Get-ChildItem -Path $SearchPath -Include * -Directory |
+            Group-Object { $_.Parent.Name } -NoElement |
+            Where-Object Count -GT $VersionCount
+    }
 }

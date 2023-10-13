@@ -1,7 +1,7 @@
 ---
-external help file: PWAddins-help.xml
-Module Name: PWAddins
-online version: https://github.com/peetrike/ModuleVersion/blob/master/Docs/Update-LocalModule.md
+external help file: ModuleVersion-help.xml
+Module Name: ModuleVersion
+online version: https://github.com/peetrike/ModuleVersion/blob/main/docs/en-US/Update-LocalModule.md
 schema: 2.0.0
 ---
 
@@ -130,6 +130,6 @@ installed to AllUsers scope.
 
 ## RELATED LINKS
 
-[Install-Module](https://docs.microsoft.com/powershell/module/powershellget/install-module)
+[Install-Module](https://learn.microsoft.com/powershell/module/powershellget/install-module)
 
-[Update-Module](https://docs.microsoft.com/powershell/module/powershellget/update-module)
+[Update-Module](https://learn.microsoft.com/powershell/module/powershellget/update-module)

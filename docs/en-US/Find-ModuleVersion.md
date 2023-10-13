@@ -13,7 +13,7 @@ Find local modules that have too many versions on disk
 ## SYNTAX
 
 ```
-Find-ModuleVersion [[-Name] <String>] [-Scope <String>] [-VersionCount <Int32>] [<CommonParameters>]
+Find-ModuleVersion [[-Name] <String>] [-Scope <Scope>] [-VersionCount <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -39,7 +39,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: 1
 Default value: *
 Accept pipeline input: False
 Accept wildcard characters: True
@@ -49,9 +49,10 @@ Accept wildcard characters: True
 {{ Fill Scope Description }}
 
 ```yaml
-Type: String
+Type: Scope
 Parameter Sets: (All)
 Aliases:
+Accepted values: None, CurrentUser, AllUsers
 
 Required: False
 Position: Named
